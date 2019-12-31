@@ -8,7 +8,8 @@ let google = window.google
 var infowindow = new google.maps.InfoWindow({});
 class App extends Component {
   state = {
-    locAvailable: false
+    locAvailable: false,
+    loading: false
   }
 
   componentWillMount() {
@@ -16,17 +17,36 @@ class App extends Component {
     // script.src = 'http://maps.googleapis.com/maps/api/js?libraries=geometry';
     // setTimeout(()=>{
     this.initialize();
+   
     // },2000)
 
   }
+  componentDidMount() {
+    var div = document.createElement("div");
+    div.setAttribute("id","content-d");
+    // // ifrm.setAttribute("src", mapurl);
+    document.body.appendChild(div);
+    document.getElementById("content-d").addEventListener("click", this.refreshMap);
+  }
+
+  componentWillUnmount() {
+    document.getElementById("myBtn").removeEventListener("click", this.refreshMap);
+    // document.removeEventListener('mousedown', this.handleClickOutside);
+  }
   initialize = () => {
+    this.setState({loading:true})
     if (navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(this.showPosition);
     } else {
       console.log('aint got location')
     }
   }
-
+  
+  refreshMap = () => {
+    var elem = document.getElementById("ifrmMap");
+    elem.parentNode.removeChild(elem);
+    this.initialize();
+  }
   showPosition = (position) => {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
@@ -62,13 +82,20 @@ class App extends Component {
       console.log('log lat', ptLat, ptLng)
       if (google.maps.geometry.spherical.computeDistanceBetween(point, circle.getCenter()) < circle.getRadius()) {
         // createMarker(map, point, "marker " + i);
-        let mapurl = `http://maps.google.com/maps?q=${ptLat},${ptLng}+(My+Point)&z=14&output=embed`
+        let mapurl = `https://maps.google.com/maps?q=${ptLat},${ptLng}+(My+Point)&z=14&output=embed`
         //  window.open(mapurl, '_blank');
         var ifrm = document.createElement("iframe");
+        ifrm.setAttribute("id","ifrmMap");
         ifrm.setAttribute("src", mapurl);
         document.body.appendChild(ifrm);
 
+        // var div = document.createElement("div");
+        // div.setAttribute("id","content-d");
+        // // // ifrm.setAttribute("src", mapurl);
+        // document.body.appendChild(div);
+        // document.getElementById("ifrmMap").src = mapurl;
         console.log('asdf')
+        this.setState({loading:false})
         break;
       }
       // return;
@@ -89,6 +116,7 @@ class App extends Component {
   render() {
     return (
       <div id="map">
+  
       </div>
     )
   }
