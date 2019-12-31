@@ -3,9 +3,6 @@ iframe {
   height: 100vh;
   position: relative !important;
 }
-#content{
-  z-index: 1; position: absolute; height: 38px; width: 38px;
-}
 #content-d{
 	position:fixed;
 	width:50px;

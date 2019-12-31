@@ -13,26 +13,16 @@ class App extends Component {
   }
 
   componentWillMount() {
-    //   var script = document.createElement('script');
-    // script.src = 'http://maps.googleapis.com/maps/api/js?libraries=geometry';
-    // setTimeout(()=>{
     this.initialize();
-   
-    // },2000)
 
   }
   componentDidMount() {
     var div = document.createElement("div");
     div.setAttribute("id","content-d");
-    // // ifrm.setAttribute("src", mapurl);
     document.body.appendChild(div);
     document.getElementById("content-d").addEventListener("click", this.refreshMap);
   }
 
-  componentWillUnmount() {
-    document.getElementById("myBtn").removeEventListener("click", this.refreshMap);
-    // document.removeEventListener('mousedown', this.handleClickOutside);
-  }
   initialize = () => {
     this.setState({loading:true})
     if (navigator.geolocation) {
@@ -50,9 +40,6 @@ class App extends Component {
   showPosition = (position) => {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
-    // if(lat){
-    //   this.setState({locAvailable:true})
-    // }
     var map = new google.maps.Map(document.getElementById("map"), {
       zoom: 20,
       center: new google.maps.LatLng(lat, lon),
@@ -81,24 +68,15 @@ class App extends Component {
       var point = new google.maps.LatLng(ptLat, ptLng);
       console.log('log lat', ptLat, ptLng)
       if (google.maps.geometry.spherical.computeDistanceBetween(point, circle.getCenter()) < circle.getRadius()) {
-        // createMarker(map, point, "marker " + i);
         let mapurl = `https://maps.google.com/maps?q=${ptLat},${ptLng}+(My+Point)&z=14&output=embed`
-        //  window.open(mapurl, '_blank');
         var ifrm = document.createElement("iframe");
         ifrm.setAttribute("id","ifrmMap");
         ifrm.setAttribute("src", mapurl);
         document.body.appendChild(ifrm);
-
-        // var div = document.createElement("div");
-        // div.setAttribute("id","content-d");
-        // // // ifrm.setAttribute("src", mapurl);
-        // document.body.appendChild(div);
-        // document.getElementById("ifrmMap").src = mapurl;
         console.log('asdf')
         this.setState({loading:false})
         break;
       }
-      // return;
     }
   }
 
