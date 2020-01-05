@@ -48,7 +48,7 @@ class App extends Component {
 
     circle = new google.maps.Circle({
       center: map.getCenter(),
-      radius: 100000, // meters
+      radius: 50000, // meters
       strokeColor: "#0000FF",
       strokeOpacity: 0.8,
       strokeWeight: 2,
