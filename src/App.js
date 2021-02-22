@@ -6,6 +6,7 @@ let lat = null;
 let lon = null;
 let google = window.google
 var infowindow = new google.maps.InfoWindow({});
+var locationRadiusFromUrl = null;
 class App extends Component {
   state = {
     locAvailable: false,
@@ -17,6 +18,10 @@ class App extends Component {
 
   }
   componentDidMount() {
+    var url_string = window.location.href
+var url = new URL(url_string);
+locationRadiusFromUrl = url.searchParams.get("loc");
+console.log(locationRadiusFromUrl);
     var div = document.createElement("div");
     div.setAttribute("id","content-d");
     document.body.appendChild(div);
@@ -48,7 +53,7 @@ class App extends Component {
 
     circle = new google.maps.Circle({
       center: map.getCenter(),
-      radius: 50000, // meters
+      radius: (locationRadiusFromUrl * 1000) || 50000,
       strokeColor: "#0000FF",
       strokeOpacity: 0.8,
       strokeWeight: 2,
